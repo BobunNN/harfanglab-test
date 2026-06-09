@@ -1,52 +1,98 @@
-## FastAPI Docker Template
+# HarfangLab Tech Test — Video Game API
 
-This project provides a template for running a FastAPI application inside a Docker container, with modern Python dependency management using uv and pyproject.toml.
+A REST API to manage a video game database, built with FastAPI, SQLModel, and PostgreSQL.
 
 ## Prerequisites
 
-This project requires [uv](https://github.com/astral-sh/uv) for Python dependency management. Install it with:
+- [Docker](https://www.docker.com/)
+- [uv](https://github.com/astral-sh/uv) for local development
 
+Install uv:
 ```sh
 curl -Ls https://astral.sh/uv/install.sh | sh
 ```
 
-Or see the [uv installation guide](https://github.com/astral-sh/uv#installation) for other methods.
+## Quick Start
 
-### Features
-- FastAPI app with a simple health check endpoint
-- Dockerfile for development and production
-- uv for fast dependency management
-- Example Makefile for build and up commands
-- Pre-commit hooks for linting/formatting
-
-### Quick Start
-1. Build the Docker image:
-	```sh
-	make build-dev
-	```
-2. Start the development container:
-	```sh
-	make dev-up
-	```
-
-The app will be available at http://localhost:8080.
-
-#### Enable Pre-commit Hooks
-After cloning the repo, run:
 ```sh
-pre-commit install
+make build-dev
+make dev-start
 ```
-This will enable automatic linting and formatting on commit.
 
-### Project Structure
-- `src/app/main.py`: FastAPI app entry point
-- `provision/Dockerfile.dev`: Development Dockerfile
-- `provision/entrypoint.sh`: Entrypoint script
-- `pyproject.toml`: Python dependencies
+The API will be available at http://localhost:8080.  
+Interactive docs: http://localhost:8080/docs
 
-### Health Check
-Visit `/` to check if the app is running:
+## Running Tests
+
+Tests use an in-memory SQLite database and require no running services:
+
+```sh
+uv run pytest tests/ -v
 ```
-GET /
-Response: "ok"
+
+
+## API Endpoints
+
+### Video Games
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/video-games/` | List and filter games |
+| `POST` | `/video-games/` | Create a game |
+| `GET` | `/video-games/{uuid}` | Get a game |
+| `PATCH` | `/video-games/{uuid}` | Update a game |
+| `DELETE` | `/video-games/{uuid}` | Delete a game |
+
+### Filtering & Pagination
+
+`GET /video-games/` accepts the following query parameters:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `name` | string | Partial name search (case-insensitive) |
+| `studio` | string | Partial studio search (case-insensitive) |
+| `platform` | string | Exact platform (`PC`, `PS3`, `PS4`, `PS5`, `Switch`, `One`, `WiiU`) |
+| `release_date_from` | date | Filter games released from this date |
+| `release_date_to` | date | Filter games released up to this date |
+| `min_ratings` | int (0–20) | Minimum rating |
+| `max_ratings` | int (0–20) | Maximum rating |
+| `limit` | int (1–100) | Results per page (default: 20) |
+| `offset` | int | Pagination offset (default: 0) |
+
+### Game Schema
+
+```json
+{
+  "name": "The Witcher 3 : Wild Hunt",
+  "release_date": "2015-05-19",
+  "studio": "CD Projekt RED",
+  "ratings": 19,
+  "platform": "PC"
+}
+```
+
+## Features
+
+- CRUD operations for video games
+- Fuzzy duplicate detection — rejects games whose name is too similar to an existing one (threshold: 90/100)
+- Input validation — empty names and invalid platforms are rejected
+- Pagination and filtering on list endpoint
+- Alembic migrations
+- Pytest test suite
+
+## Project Structure
+
+```
+src/app/
+├── main.py               # App entry point
+├── config.py             # Settings (pydantic-settings)
+├── dependencies.py       # DB session dependency
+├── exception_handlers.py # Global exception handlers
+└── games/
+    ├── models.py         # SQLModel table model
+    ├── schemas.py        # Pydantic schemas
+    ├── repository.py     # DB queries
+    ├── service.py        # Business logic
+    ├── router.py         # FastAPI routes
+    └── exceptions.py     # Domain exceptions
 ```
