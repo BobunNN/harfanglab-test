@@ -1,0 +1,54 @@
+Exercice Back-end Python 
+Consignes 
+On souhaite aller le plus loin possible dans le sujet suivant en 2h. L’objectif n’est pas de traiter tous les aspects de l’exercice mais d’en traiter un maximum pendant le temps imparti. 
+Le résultat transmis sera un lien vers un dépôt Gitlab/Github, ou bien une archive renvoyée par mail. 
+Sujet 
+Nous souhaitons developer une base de données de jeux vidéos ainsi qu’une API HTTP Python qui permette de l’interroger. 
+L’API doit permettre d’ajouter un jeu, de modifier un jeu existant ou de le supprimer, ainsi que de les lister/filtrer. On considérera a minima les champs suivants pour un jeu : 
+[ 
+{ 
+"name": "The Witcher 3 : Wild Hunt", 
+"release_date": "2015-05-19", 
+"studio": "CD Projekt RED", 
+"ratings": 19, 
+"platforms": [ 
+"PC", 
+"PS4", 
+"PS5", 
+"Switch", 
+"One" 
+] 
+}, 
+{ 
+"name": "Mario Kart 8 Deluxe", 
+"release_date": "2017-04-28", 
+"studio": "Nintendo", 
+"ratings": 16, 
+"platforms": [ 
+"Switch" 
+] 
+}, 
+{ 
+"name": "Don't Starve", 
+"release_date": "2013-04-23", 
+"studio": "Capybara Games", 
+"ratings": 17, 
+1
+"platforms": [ 
+"PC", 
+"PS4", 
+"Switch", 
+"One", 
+"WiiU", 
+"PS3" 
+] 
+} 
+] 
+On prendra soin de nettoyer les données ajoutées par API (on ne souhaite pas accepter de jeu avec un nom vide). 
+Le choix du framework HTTP ainsi que de la base de données est libre. Dans un premier temps, il n’est pas nécessaire de mettre en place un système de login ou de restriction d’accès. 
+Pour aller plus loin 
+• On souhaite afficher sur l’application un dashboard qui affiche les meilleurs jeux de l’année, les dernières sorties, ainsi que le nombre de jeux par plateforme. Développer le point d’API correspondant. 
+• Comment peut-on déployer cette application avec Docker ? Proposer un Dockerfile/docker-compose.yml. 
+• Mettre en place un système de logging sur l’application. 
+• Afin d’éviter les doublons, on refusera d’ajouter des jeux dont le nom est trop proche d’un nom existant (par exemple, “Son’t Starve” est refusé si nous connaissons déjà “Don’t Starve”). On pourra s’aider du paquet Fuzzy Wuzzy. 
+2

@@ -8,6 +8,9 @@ WORKDIR /app
 # Copy src folder to /app/src
 COPY src /app/src
 
+COPY alembic /app/alembic
+COPY alembic.ini /app/alembic.ini
+
 # Copy uv.lock and pyproject.toml to /app
 COPY uv.lock /app/uv.lock
 COPY pyproject.toml /app/pyproject.toml
@@ -16,7 +19,7 @@ RUN pip install uv
 RUN uv sync
 
 # Copy entrypoint.sh to /app
-COPY provision/entrypoint.sh /app/entrypoint.sh
-RUN chmod +x /app/entrypoint.sh
+COPY provision/entrypoint.sh /app/provision/entrypoint.sh
 
-ENTRYPOINT [ "/app/entrypoint.sh" ]
+
+ENTRYPOINT [ "/app/provision/entrypoint.sh" ]
