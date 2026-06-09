@@ -40,7 +40,10 @@ def search_video_games(session: Session, filters: VideoGameFilters) -> list[Vide
     if filters.studio:
         query = query.where(VideoGame.studio.ilike(f"%{filters.studio}%"))
     if filters.platform:
-        query = query.where(VideoGame.platform == filters.platform)
+        from sqlalchemy import or_
+        query = query.where(
+            or_(*[VideoGame.platform.contains([p]) for p in filters.platform])
+        )
     if filters.release_date_from:
         query = query.where(VideoGame.release_date >= filters.release_date_from)
     if filters.release_date_to:

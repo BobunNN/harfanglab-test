@@ -1,8 +1,8 @@
-"""Video Game new schema
+"""Recreate schema
 
-Revision ID: 652acfa6c99f
+Revision ID: 27a6a047be5f
 Revises: 
-Create Date: 2026-06-09 16:40:46.056804
+Create Date: 2026-06-09 17:39:37.038387
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '652acfa6c99f'
+revision: str = '27a6a047be5f'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -27,7 +27,7 @@ def upgrade() -> None:
     sa.Column('release_date', sa.Date(), nullable=True),
     sa.Column('ratings', sa.Integer(), nullable=True),
     sa.Column('studio', sqlmodel.sql.sqltypes.AutoString(length=100), nullable=True),
-    sa.Column('platform', sqlmodel.sql.sqltypes.AutoString(), nullable=False),
+    sa.Column('platform', sa.JSON(), nullable=False),
     sa.Column('uuid', sa.Uuid(), nullable=False),
     sa.PrimaryKeyConstraint('uuid')
     )

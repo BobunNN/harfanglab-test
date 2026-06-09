@@ -6,7 +6,7 @@ VALID_GAME = {
     "release_date": "2015-05-19",
     "studio": "CD Projekt RED",
     "ratings": 19,
-    "platform": "PC",
+    "platform": ["PC"],
 }
 
 
@@ -30,7 +30,7 @@ class TestCreateVideoGame:
         assert response.status_code == 422
 
     def test_create_rejects_invalid_platform(self, client: TestClient):
-        response = client.post("/video-games/", json={**VALID_GAME, "platform": "Xbox360"})
+        response = client.post("/video-games/", json={**VALID_GAME, "platform": ["Xbox360"]})
         assert response.status_code == 422
 
     def test_create_rejects_rating_out_of_range(self, client: TestClient):
@@ -114,7 +114,7 @@ class TestSearchVideoGames:
 
     def test_filter_by_platform(self, client: TestClient):
         create_game(client)
-        create_game(client, {**VALID_GAME, "name": "Mario Kart 8", "platform": "Switch"})
+        create_game(client, {**VALID_GAME, "name": "Mario Kart 8", "platform": ["Switch"]})
         response = client.get("/video-games/?platform=Switch")
         assert len(response.json()) == 1
 

@@ -1,6 +1,7 @@
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
 from src.app.dependencies import get_db
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/video-games", tags=["video-games"])
 
 
 @router.get("/", response_model=list[VideoGame])
-def search_video_games(filters: VideoGameFilters = Depends(), session: Session = Depends(get_db)):
+def search_video_games(filters: Annotated[VideoGameFilters, Query()], session: Session = Depends(get_db)):
     return service.search_video_games(session, filters)
 
 
