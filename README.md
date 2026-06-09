@@ -15,7 +15,7 @@ curl -Ls https://astral.sh/uv/install.sh | sh
 ## Quick Start
 
 ```sh
-make build-dev
+make dev-build
 make dev-start
 ```
 
