@@ -5,7 +5,9 @@ authors = [
 dependencies = [
   "alembic>=1.18.4",
   "fastapi[standard]>=0.133.0",
-  "psycopg2-binary>=2.9.12",
+  "psycopg[binary]>=3.3.4",
+  "pydantic-settings>=2.13.1",
+  "sqlmodel>=0.0.38",
 ]
 description = "HarfangLab tech test"
 name = "harfanglab-test"
@@ -16,6 +18,7 @@ version = "0.1.0"
 [dependency-groups]
 dev = [
   "pytest>=9.0.2",
+  "requests>=2.34.2",
   "ruff>=0.15.2",
 ]
 
