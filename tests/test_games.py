@@ -80,6 +80,23 @@ class TestDeleteVideoGame:
         assert response.status_code == 404
 
 
+class TestFuzzyDuplicateCheck:
+    def test_rejects_similar_name(self, client: TestClient):
+        create_game(client)
+        response = client.post("/video-games/", json={**VALID_GAME, "name": "The Witcher 3 "})
+        assert response.status_code == 409
+
+    def test_rejects_typo_name(self, client: TestClient):
+        create_game(client, {**VALID_GAME, "name": "Don't Starve"})
+        response = client.post("/video-games/", json={**VALID_GAME, "name": "Son't Starve"})
+        assert response.status_code == 409
+
+    def test_allows_different_name(self, client: TestClient):
+        create_game(client)
+        response = client.post("/video-games/", json={**VALID_GAME, "name": "Mario Kart 8"})
+        assert response.status_code == 201
+
+
 class TestSearchVideoGames:
     def test_search_returns_all_by_default(self, client: TestClient):
         create_game(client)

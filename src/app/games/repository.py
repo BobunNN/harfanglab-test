@@ -55,3 +55,7 @@ def search_video_games(session: Session, filters: VideoGameFilters) -> list[Vide
 
 def select_one(session: Session, uuid: UUID) -> VideoGame | None:
     return session.get(VideoGame, uuid)
+
+
+def get_all_names(session: Session) -> list[str]:
+    return list(session.exec(select(VideoGame.name)).all())
